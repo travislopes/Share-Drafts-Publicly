@@ -1,4 +1,4 @@
-=== Email Post Approval ===
+=== Share Drafts Publicly ===
 Contributors: travislopes, binarym
 Tags: admin, post, draft, share, public
 Requires at least: 3.0

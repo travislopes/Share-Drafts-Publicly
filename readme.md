@@ -1,4 +1,4 @@
-# Email Post Approval
+# Share Drafts Publicly
 **Contributors:** travislopes, binarym
 
 **Requires at least:** 3.0
