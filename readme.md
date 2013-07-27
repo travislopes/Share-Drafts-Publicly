@@ -9,6 +9,8 @@
 A WordPress plugin that provides a secret link for non-logged in users to view post drafts. A checkbox is added to the Publish box asking if you want to make the post draft public. Upon doing so, a public link will be added next to the checkbox for you to share with outside visitors to view the post.
 
 ### Changelog
+* v1.0.1
+	* Fixed bug where secret key changes on saving a new draft
 * v1.0.0
 	* Initial release
 

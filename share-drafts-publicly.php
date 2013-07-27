@@ -3,7 +3,7 @@
 	/*
 	Plugin Name: Share Drafts Publicy
 	Description: A plugin that provides a secret link for non-logged in users to view post drafts.
-	Version: 1.0.0
+	Version: 1.0.1
 	Author: BinaryM Inc - Travis Lopes
 	Author URI: http://binarym.com/
 	License: GPL2
@@ -37,8 +37,7 @@
 				return false;
 
 			if(isset($_POST['make-draft-public']) && $_POST['make-draft-public'] === 'true') {
-				$secret_key = get_post_meta($post_id, '_draft_secret_key', true);
-				if(empty($secret_key)) update_post_meta($post_id, '_draft_secret_key', wp_generate_password(6, false, false));
+				add_post_meta($post_id, '_draft_secret_key', wp_generate_password(6, false, false), true);
 			} else {
 				delete_post_meta($post_id, '_draft_secret_key');	
 			}

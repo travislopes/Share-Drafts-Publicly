@@ -20,5 +20,7 @@ A WordPress plugin that provides a secret link for non-logged in users to view p
 1. Activate the plugin through the 'Plugins' menu in WordPress
 
 == Changelog ==
+= v1.0.1 =
+* Fixed bug where secret key changes on saving a new draft
 = v1.0.0 =
 * Initial release
