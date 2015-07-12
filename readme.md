@@ -1,14 +1,16 @@
 # Share Drafts Publicly
-**Contributors:** travislopes, binarym
+**Contributors:** travislopes
 
 **Requires at least:** 3.0
 
-**Tested up to:** 3.5.1
+**Tested up to:** 4.3
 
 ### Description
-A WordPress plugin that provides a secret link for non-logged in users to view post drafts. A checkbox is added to the Publish box asking if you want to make the post draft public. Upon doing so, a public link will be added next to the checkbox for you to share with outside visitors to view the post.
+Need to show a post to someone but they don't have a WordPress user account? Share Drafts Publicly allows you to generate a private URL for non-users to view post drafts with a simple click of a button.
 
 ### Changelog
+* v1.1.1
+	* Moved public draft controls to separate meta box.
 * v1.0.1
 	* Fixed bug where secret key changes on saving a new draft
 * v1.0.0
