@@ -3,7 +3,7 @@
 /*
 Plugin Name: Share Drafts Publicy
 Description: Provide a secret link to non-logged in users to view post drafts.
-Version: 1.1
+Version: 1.1.1
 Author: Travis Lopes
 Author URI: http://travislop.es
 License: GPL2
@@ -113,10 +113,11 @@ class Share_Drafts_Publicly {
 	 */
 	public function add_meta_box() {
 		
-		$post_id     = isset( $_GET['post'] ) ? esc_attr( $_GET['post'] ) : null;
-		$post_status = get_post_status( $post_id );
+		$post_id          = isset( $_GET['post'] ) ? esc_attr( $_GET['post'] ) : null;
+		$post_status      = get_post_status( $post_id );
+		$allowed_statuses = apply_filters( 'sdp_allowed_post_status', array( 'draft', 'pending', 'auto-draft',' future' ) );
 		
-		if ( in_array( $post_status, array( 'draft', 'pending', 'auto-draft',' future' ) ) ) {
+		if ( in_array( $post_status, $allowed_statuses ) ) {
 			add_meta_box( 'share_drafts_publicly', esc_html__( 'Share Drafts Publicly', 'share_drafts_publicly' ), array( $this, 'display_meta_box' ), null, 'side', 'low' );
 		}
 		
