@@ -9,6 +9,9 @@
 Need to show a post to someone but they don't have a WordPress user account? Share Drafts Publicly allows you to generate a private URL for non-users to view post drafts with a simple click of a button.
 
 ### Changelog
+* v1.1.2
+	* Fixed PHP notice when getting draft URL or draft status.
+	* Fixed WordPress coding standards issues.
 * v1.1.1
 	* Added "sdp_allowed_post_status" filter for setting which post statuses will present the "Share Drafts Publicly" metabox.
 * v1.1
