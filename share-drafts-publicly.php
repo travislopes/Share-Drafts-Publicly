@@ -2,7 +2,7 @@
 /**
 Plugin Name: Share Drafts Publicy
 Description: Provide a secret link to non-logged in users to view post drafts.
-Version: 1.1.2
+Version: 1.1.3
 Author: Travis Lopes
 Author URI: http://travislop.es
 License: GPL2
@@ -56,7 +56,7 @@ class Share_Drafts_Publicly {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_box' ) );
 
 		// Show draft if provided secret key.
-		add_filter( 'the_posts', array( $this, 'show_draft_publicly' ) );
+		add_filter( 'the_posts', array( $this, 'show_draft_publicly' ), 10, 2 );
 
 		// Add public draft link to post actions.
 		add_filter( 'post_row_actions', array( $this, 'add_post_row_action' ), 10, 2 );
