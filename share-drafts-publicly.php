@@ -117,7 +117,7 @@ class Share_Drafts_Publicly {
 	 */
 	public function add_meta_box() {
 
-		$post_id          = isset( $_GET['post'] ) ? sanitize_text_field( wp_unslash( $_GET['post'] ) ) : null;
+		$post_id          = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : null;
 		$post_status      = get_post_status( $post_id );
 		$allowed_statuses = apply_filters( 'sdp_allowed_post_status', array( 'draft', 'pending', 'auto-draft', 'future' ) );
 
@@ -136,7 +136,7 @@ class Share_Drafts_Publicly {
 	public function display_meta_box() {
 
 		// Get post ID and draft URL.
-		$post_id   = get_the_ID() ? get_the_ID() : sanitize_text_field( wp_unslash( $_GET['post'] ) );
+		$post_id   = get_the_ID() ? get_the_ID() : absint( $_GET['post'] );
 		$draft_url = $this->get_draft_url();
 
 		// Prepare button styling.
@@ -238,7 +238,7 @@ class Share_Drafts_Publicly {
 
 		// Get the post ID if not set.
 		if ( empty( $post_id ) && isset( $_GET['post'] ) ) {
-			$post_id = sanitize_text_field( wp_unslash( $_GET['post'] ) );
+			$post_id = absint( $_GET['post'] );
 		}
 
 		// Get the permalink.
@@ -266,7 +266,7 @@ class Share_Drafts_Publicly {
 
 		// Get the post ID if not set.
 		if ( empty( $post_id ) && isset( $_GET['post'] ) ) {
-			$post_id = sanitize_text_field( wp_unslash( $_GET['post'] ) );
+			$post_id = absint( $_GET['post'] );
 		}
 
 		// Get draft visibility status.
