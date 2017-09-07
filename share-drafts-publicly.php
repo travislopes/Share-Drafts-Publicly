@@ -144,10 +144,17 @@ class Share_Drafts_Publicly {
 		$private_styling = ! $this->is_draft_public() ? 'display:none;' : 'display:inline-block;';
 
 		/* Prepare HTML for meta box. */
-		$html  = '<input id="sdp_link" type="text" value="' . esc_attr( $draft_url ) . '" style="' . $private_styling . '" class="widefat" onclick="this.setSelectionRange( 0, this.value.length );" readonly />';
-		$html .= '<input id="sdp_make_public" class="button" type="button" style="' . $public_styling . '" name="sdp_make_public" onclick="make_draft_public(' . esc_attr( $post_id ) . ');" value="' . esc_attr__( 'Make Draft Public', 'share_drafts_publicly' ) . '" />';
-		$html .= '<input id="sdp_make_private" class="button" type="button" style="' . $private_styling . '" name="sdp_make_private" onclick="make_draft_private(' . esc_attr( $post_id ) . ');" value="' . esc_attr__( 'Make Draft Private', 'share_drafts_publicly' ) . '" />';
-		$html .= '<span class="spinner"></span>';
+		ob_start();
+		?>
+
+		<input id="sdp_link" type="text" value="<?php echo esc_url( $draft_url ); ?>" style="<?php echo esc_attr( $private_styling ); ?>" class="widefat" onclick="this.setSelectionRange( 0, this.value.length );" readonly />
+		<input id="sdp_make_public" class="button" type="button" style="<?php echo esc_attr( $public_styling ); ?>" name="sdp_make_public" value="<?php esc_attr_e( 'Make Draft Public', 'share_drafts_publicly' ); ?>" />
+		<input id="sdp_make_private" class="button" type="button" style="<?php echo esc_attr( $private_styling ); ?>" name="sdp_make_private" value="<?php esc_attr_e( 'Make Draft Private', 'share_drafts_publicly' ); ?>" />
+		<span class="spinner"></span>
+
+		<?php
+		$html = ob_get_contents();
+		ob_clean();
 
 		echo $html;
 
