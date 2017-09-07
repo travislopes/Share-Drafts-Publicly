@@ -71,6 +71,7 @@ class Share_Drafts_Publicly {
 	public function scripts() {
 
 		wp_register_script( 'share-drafts-publicly', plugins_url( 'share-drafts-publicly/js/share-drafts-publicly.js' ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/share-drafts-publicly.js' ), true );
+		wp_localize_script( 'share-drafts-publicly', 'SDP', array( 'postId' => get_the_ID() ? get_the_ID() : absint( $_GET['post'] ) ) );
 
 		if ( $this->enqueue_script() ) {
 			wp_enqueue_script( 'share-drafts-publicly' );
