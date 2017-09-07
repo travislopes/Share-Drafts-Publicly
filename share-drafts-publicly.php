@@ -135,8 +135,7 @@ class Share_Drafts_Publicly {
 	 */
 	public function display_meta_box() {
 
-		// Get post ID and draft URL.
-		$post_id   = get_the_ID() ? get_the_ID() : absint( $_GET['post'] );
+		// Get draft URL.
 		$draft_url = $this->get_draft_url();
 
 		// Prepare button styling.
