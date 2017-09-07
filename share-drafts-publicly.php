@@ -70,7 +70,7 @@ class Share_Drafts_Publicly {
 	 */
 	public function scripts() {
 
-		wp_register_script( 'share-drafts-publicly', plugins_url( 'share-drafts-publicly/js/share-drafts-publicly.js' ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/share-drafts-publicly.js' ), true );
+		wp_register_script( 'share-drafts-publicly', plugin_dir_url( __FILE__ ) . 'js/share-drafts-publicly.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/share-drafts-publicly.js' ), true );
 		wp_localize_script( 'share-drafts-publicly', 'SDP', array( 'postId' => get_the_ID() ? get_the_ID() : absint( $_GET['post'] ) ) );
 
 		if ( $this->enqueue_script() ) {
@@ -86,7 +86,7 @@ class Share_Drafts_Publicly {
 	 */
 	public function styles() {
 
-		wp_register_style( 'share-drafts-publicly', plugins_url( 'share-drafts-publicly/css/share-drafts-publicly.css' ) );
+		wp_register_style( 'share-drafts-publicly', plugin_dir_url( __FILE__ ) . 'css/share-drafts-publicly.css' );
 
 		if ( $this->enqueue_script() ) {
 			wp_enqueue_style( 'share-drafts-publicly' );
