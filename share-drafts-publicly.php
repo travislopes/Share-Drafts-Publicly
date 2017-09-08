@@ -8,12 +8,12 @@ Author URI: http://travislop.es
 License: GPL2
 Text Domain: share_drafts_publicly
 Domain Path: /languages
- */
+*/
 
 class Share_Drafts_Publicly {
 
 	/**
-	 * Instance of Share Drafts Publicly class
+	 * Instance of Share Drafts Publicly class.
 	 *
 	 * @var    object
 	 * @access private
@@ -24,8 +24,10 @@ class Share_Drafts_Publicly {
 	/**
 	 * Get instance of this class.
 	 *
+	 * @since  1.1
 	 * @access public
 	 * @static
+	 *
 	 * @return $_instance
 	 */
 	public static function get_instance() {
@@ -41,6 +43,7 @@ class Share_Drafts_Publicly {
 	/**
 	 * Register needed hooks.
 	 *
+	 * @since  1.0
 	 * @access public
 	 */
 	public function __construct() {
@@ -66,7 +69,10 @@ class Share_Drafts_Publicly {
 	/**
 	 * Enqueue needed scripts.
 	 *
+	 * @since  1.1
 	 * @access public
+	 *
+	 * @uses Share_Drafts_Publicly::enqueue_script()
 	 */
 	public function scripts() {
 
@@ -88,7 +94,10 @@ class Share_Drafts_Publicly {
 	/**
 	 * Enqueue needed styles.
 	 *
+	 * @since  1.1
 	 * @access public
+	 *
+	 * @uses Share_Drafts_Publicly::enqueue_script()
 	 */
 	public function styles() {
 
@@ -103,7 +112,9 @@ class Share_Drafts_Publicly {
 	/**
 	 * Helper function to determine if script should be enqueued.
 	 *
+	 * @since  1.1
 	 * @access public
+	 *
 	 * @return bool
 	 */
 	public function enqueue_script() {
@@ -118,8 +129,8 @@ class Share_Drafts_Publicly {
 	/**
 	 * Add meta box.
 	 *
+	 * @since  1.1
 	 * @access public
-	 * @return void
 	 */
 	public function add_meta_box() {
 
@@ -136,8 +147,10 @@ class Share_Drafts_Publicly {
 	/**
 	 * Display meta box contents.
 	 *
+	 * @since  1.1
 	 * @access public
-	 * @return void
+	 *
+	 * @uses Share_Drafts_Publicly::is_draft_public()
 	 */
 	public function display_meta_box() {
 
@@ -148,7 +161,7 @@ class Share_Drafts_Publicly {
 		$public_styling  = $this->is_draft_public() ? 'display:none;' : 'display:inline-block;';
 		$private_styling = ! $this->is_draft_public() ? 'display:none;' : 'display:inline-block;';
 
-		/* Prepare HTML for meta box. */
+		// Prepare HTML for meta box.
 		ob_start();
 		?>
 
@@ -168,10 +181,16 @@ class Share_Drafts_Publicly {
 	/**
 	 * Show draft if provided secret key.
 	 *
+	 * @since  1.1
 	 * @access public
+	 *
 	 * @param  array    $posts The array of retrieved posts.
 	 * @param  WP_Query $wp_query The WP_Query instance.
-	 * @return array $posts
+	 *
+	 * @uses wpdb::get_results()
+	 * @uses wpdb::is_main_query()
+	 *
+	 * @return array
 	 */
 	public function show_draft_publicly( $posts, $wp_query ) {
 
@@ -188,10 +207,16 @@ class Share_Drafts_Publicly {
 	/**
 	 * Add public draft link to post actions.
 	 *
+	 * @since  1.0
 	 * @access public
-	 * @param  array   $actions An array of row action links.
-	 * @param  WP_Post $post The post object.
-	 * @return array $actions
+	 *
+	 * @param array   $actions An array of row action links.
+	 * @param WP_Post $post    The current Post object.
+	 *
+	 * @uses Share_Drafts_Publicly::get_draft_url()
+	 * @uses Share_Drafts_Publicly::is_draft_public()
+	 *
+	 * @return array
 	 */
 	public function add_post_row_action( $actions, $post ) {
 
@@ -206,9 +231,18 @@ class Share_Drafts_Publicly {
 	/**
 	 * Change draft status of post.
 	 *
+	 * @since  1.1
 	 * @access public
+	 *
+	 * @uses Share_Drafts_Publicly::make_draft_private()
+	 * @uses Share_Drafts_Publicly::make_draft_public()
 	 */
 	public function ajax_change_status() {
+
+		// Verify nonce.
+		if ( ! wp_verify_nonce( $_GET['nonce'], $this->get_slug() ) ) {
+			wp_send_json_error( array( 'message' => esc_html__( 'Invalid request.', 'share_drafts_publicly' ) ) );
+		}
 
 		// Get provided informaton.
 		$make    = sanitize_text_field( wp_unslash( $_GET['make'] ) );
@@ -217,6 +251,7 @@ class Share_Drafts_Publicly {
 		switch ( $make ) {
 
 			case 'private':
+
 				$make_private = $this->make_draft_private( $post_id );
 
 				if ( ! $make_private ) {
@@ -226,6 +261,7 @@ class Share_Drafts_Publicly {
 				}
 
 			case 'public':
+
 				$make_public = $this->make_draft_public( $post_id );
 
 				if ( ! $make_public ) {
@@ -241,9 +277,12 @@ class Share_Drafts_Publicly {
 	/**
 	 * Get public draft URL.
 	 *
+	 * @since  1.1
 	 * @access public
-	 * @param  int    $post_id (default: null) Post ID.
-	 * @param  string $secret_key (default: null) Secret key.
+	 *
+	 * @param int    $post_id    Post ID.
+	 * @param string $secret_key Secret key.
+	 *
 	 * @return string
 	 */
 	public function get_draft_url( $post_id = null, $secret_key = null ) {
@@ -270,8 +309,11 @@ class Share_Drafts_Publicly {
 	/**
 	 * Determine if draft is being shared publicly.
 	 *
+	 * @since  1.1
 	 * @access public
-	 * @param  int $post_id (default: null) Post ID.
+	 *
+	 * @param int $post_id Post ID.
+	 *
 	 * @return bool
 	 */
 	public function is_draft_public( $post_id = null ) {
@@ -291,11 +333,14 @@ class Share_Drafts_Publicly {
 	/**
 	 * Make draft private.
 	 *
+	 * @since  1.1
 	 * @access public
-	 * @param  int $post_id Post ID to make private.
+	 *
+	 * @param int $post_id Post ID to make private.
+	 *
 	 * @return bool
 	 */
-	public function make_draft_private( $post_id ) {
+	public function make_draft_private( $post_id = 0 ) {
 
 		// Delete post meta.
 		return delete_post_meta( $post_id, '_draft_secret_key' );
@@ -305,17 +350,22 @@ class Share_Drafts_Publicly {
 	/**
 	 * Make draft public.
 	 *
+	 * @since  1.1
 	 * @access public
-	 * @param  int $post_id Post ID to make public.
+	 *
+	 * @param int $post_id Post ID to make public.
+	 *
+	 * @uses Share_Drafts_Publicly::get_draft_url()
+	 *
 	 * @return string|bool
 	 */
-	public function make_draft_public( $post_id ) {
+	public function make_draft_public( $post_id = 0 ) {
 
 		// Generate secret key.
 		$secret_key = wp_generate_password( 6, false, false );
 
 		// Add secret key to post meta.
-		$secret_key_status = add_post_meta( $post_id, '_draft_secret_key', $secret_key, true );
+		$secret_key_status = add_post_meta( intval( $post_id ), '_draft_secret_key', $secret_key, true );
 
 		// Return draft URL.
 		return $secret_key_status ? $this->get_draft_url( $post_id, $secret_key ) : false;
