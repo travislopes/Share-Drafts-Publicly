@@ -70,7 +70,8 @@ class Share_Drafts_Publicly {
 	 */
 	public function scripts() {
 
-		wp_register_script( 'share-drafts-publicly', plugins_url( 'share-drafts-publicly/js/share-drafts-publicly.js' ), array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/share-drafts-publicly.js' ), true );
+		wp_register_script( 'share-drafts-publicly', plugin_dir_url( __FILE__ ) . 'js/share-drafts-publicly.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/share-drafts-publicly.js' ), true );
+		wp_localize_script( 'share-drafts-publicly', 'SDP', array( 'postId' => get_the_ID() ? get_the_ID() : absint( $_GET['post'] ) ) );
 
 		if ( $this->enqueue_script() ) {
 			wp_enqueue_script( 'share-drafts-publicly' );
@@ -85,7 +86,7 @@ class Share_Drafts_Publicly {
 	 */
 	public function styles() {
 
-		wp_register_style( 'share-drafts-publicly', plugins_url( 'share-drafts-publicly/css/share-drafts-publicly.css' ) );
+		wp_register_style( 'share-drafts-publicly', plugin_dir_url( __FILE__ ) . 'css/share-drafts-publicly.css' );
 
 		if ( $this->enqueue_script() ) {
 			wp_enqueue_style( 'share-drafts-publicly' );
@@ -116,7 +117,7 @@ class Share_Drafts_Publicly {
 	 */
 	public function add_meta_box() {
 
-		$post_id          = isset( $_GET['post'] ) ? sanitize_text_field( wp_unslash( $_GET['post'] ) ) : null;
+		$post_id          = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : null;
 		$post_status      = get_post_status( $post_id );
 		$allowed_statuses = apply_filters( 'sdp_allowed_post_status', array( 'draft', 'pending', 'auto-draft', 'future' ) );
 
@@ -134,8 +135,7 @@ class Share_Drafts_Publicly {
 	 */
 	public function display_meta_box() {
 
-		// Get post ID and draft URL.
-		$post_id   = get_the_ID() ? get_the_ID() : sanitize_text_field( wp_unslash( $_GET['post'] ) );
+		// Get draft URL.
 		$draft_url = $this->get_draft_url();
 
 		// Prepare button styling.
@@ -143,10 +143,17 @@ class Share_Drafts_Publicly {
 		$private_styling = ! $this->is_draft_public() ? 'display:none;' : 'display:inline-block;';
 
 		/* Prepare HTML for meta box. */
-		$html  = '<input id="sdp_link" type="text" value="' . esc_attr( $draft_url ) . '" style="' . $private_styling . '" class="widefat" onclick="this.setSelectionRange( 0, this.value.length );" readonly />';
-		$html .= '<input id="sdp_make_public" class="button" type="button" style="' . $public_styling . '" name="sdp_make_public" onclick="make_draft_public(' . esc_attr( $post_id ) . ');" value="' . esc_attr__( 'Make Draft Public', 'share_drafts_publicly' ) . '" />';
-		$html .= '<input id="sdp_make_private" class="button" type="button" style="' . $private_styling . '" name="sdp_make_private" onclick="make_draft_private(' . esc_attr( $post_id ) . ');" value="' . esc_attr__( 'Make Draft Private', 'share_drafts_publicly' ) . '" />';
-		$html .= '<span class="spinner"></span>';
+		ob_start();
+		?>
+
+		<input id="sdp_link" type="text" value="<?php echo esc_url( $draft_url ); ?>" style="<?php echo esc_attr( $private_styling ); ?>" class="widefat" onclick="this.setSelectionRange( 0, this.value.length );" readonly />
+		<input id="sdp_make_public" class="button" type="button" style="<?php echo esc_attr( $public_styling ); ?>" name="sdp_make_public" value="<?php esc_attr_e( 'Make Draft Public', 'share_drafts_publicly' ); ?>" />
+		<input id="sdp_make_private" class="button" type="button" style="<?php echo esc_attr( $private_styling ); ?>" name="sdp_make_private" value="<?php esc_attr_e( 'Make Draft Private', 'share_drafts_publicly' ); ?>" />
+		<span class="spinner"></span>
+
+		<?php
+		$html = ob_get_contents();
+		ob_clean();
 
 		echo $html;
 
@@ -237,7 +244,7 @@ class Share_Drafts_Publicly {
 
 		// Get the post ID if not set.
 		if ( empty( $post_id ) && isset( $_GET['post'] ) ) {
-			$post_id = sanitize_text_field( wp_unslash( $_GET['post'] ) );
+			$post_id = absint( $_GET['post'] );
 		}
 
 		// Get the permalink.
@@ -265,7 +272,7 @@ class Share_Drafts_Publicly {
 
 		// Get the post ID if not set.
 		if ( empty( $post_id ) && isset( $_GET['post'] ) ) {
-			$post_id = sanitize_text_field( wp_unslash( $_GET['post'] ) );
+			$post_id = absint( $_GET['post'] );
 		}
 
 		// Get draft visibility status.
