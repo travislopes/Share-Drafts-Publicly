@@ -79,7 +79,7 @@ class Share_Drafts_Publicly {
 		// Localize strings.
 		$localization = array(
 			'nonce'  => wp_create_nonce( 'share-drafts-publicly' ),
-			'postId' => get_the_ID() ? get_the_ID() : absint( $_GET['post'] ),
+			'postId' => get_the_ID() ? get_the_ID() : ( isset( $_GET['post'] ) ? absint( $_GET['post'] ) : 0 ),
 		);
 
 		wp_register_script( 'share-drafts-publicly', plugin_dir_url( __FILE__ ) . 'js/share-drafts-publicly.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/share-drafts-publicly.js' ), true );
