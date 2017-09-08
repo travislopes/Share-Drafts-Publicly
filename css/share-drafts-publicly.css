@@ -1,2 +1,7 @@
-#share_drafts_publicly .inside { padding-top: 6px; }
-#share_drafts_publicly input[type="text"] { margin-bottom: 12px; }
+#share_drafts_publicly .inside {
+	padding-top: 6px;
+}
+
+#share_drafts_publicly input[type="text"] {
+	margin-bottom: 12px;
+}

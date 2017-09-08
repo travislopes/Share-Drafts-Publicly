@@ -70,8 +70,14 @@ class Share_Drafts_Publicly {
 	 */
 	public function scripts() {
 
+		// Localize strings.
+		$localization = array(
+			'nonce'  => wp_create_nonce( 'share-drafts-publicly' ),
+			'postId' => get_the_ID() ? get_the_ID() : absint( $_GET['post'] ),
+		);
+
 		wp_register_script( 'share-drafts-publicly', plugin_dir_url( __FILE__ ) . 'js/share-drafts-publicly.js', array( 'jquery' ), filemtime( plugin_dir_path( __FILE__ ) . 'js/share-drafts-publicly.js' ), true );
-		wp_localize_script( 'share-drafts-publicly', 'SDP', array( 'postId' => get_the_ID() ? get_the_ID() : absint( $_GET['post'] ) ) );
+		wp_localize_script( 'share-drafts-publicly', 'shareDraftsPublicly', $localization );
 
 		if ( $this->enqueue_script() ) {
 			wp_enqueue_script( 'share-drafts-publicly' );
