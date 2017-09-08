@@ -134,8 +134,17 @@ class Share_Drafts_Publicly {
 	 */
 	public function add_meta_box() {
 
-		$post_id          = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : null;
-		$post_status      = get_post_status( $post_id );
+		// Get current post ID and status.
+		$post_id     = isset( $_GET['post'] ) ? absint( $_GET['post'] ) : null;
+		$post_status = get_post_status( $post_id );
+
+		/**
+		 * Modify which post statuses are allowed to be shared publicly.
+		 *
+		 * @since 1.1.1
+		 *
+		 * @param array $allowed_statuses Post statuses allowed to be shared publicly.
+		 */
 		$allowed_statuses = apply_filters( 'sdp_allowed_post_status', array( 'draft', 'pending', 'auto-draft', 'future' ) );
 
 		if ( in_array( $post_status, $allowed_statuses ) ) {
@@ -184,8 +193,8 @@ class Share_Drafts_Publicly {
 	 * @since  1.1
 	 * @access public
 	 *
-	 * @param  array    $posts The array of retrieved posts.
-	 * @param  WP_Query $wp_query The WP_Query instance.
+	 * @param array    $posts    The array of retrieved posts.
+	 * @param WP_Query $wp_query The WP_Query instance.
 	 *
 	 * @uses wpdb::get_results()
 	 * @uses wpdb::is_main_query()
