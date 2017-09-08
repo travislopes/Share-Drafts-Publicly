@@ -374,7 +374,7 @@ class Share_Drafts_Publicly {
 		$secret_key = wp_generate_password( 6, false, false );
 
 		// Add secret key to post meta.
-		$secret_key_status = add_post_meta( intval( $post_id ), '_draft_secret_key', $secret_key, true );
+		$secret_key_status = add_post_meta( absint( $post_id ), '_draft_secret_key', $secret_key, true );
 
 		// Return draft URL.
 		return $secret_key_status ? $this->get_draft_url( $post_id, $secret_key ) : false;
