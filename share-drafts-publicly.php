@@ -159,7 +159,7 @@ class Share_Drafts_Publicly {
 
 		// Prepare button styling.
 		$public_styling  = $this->is_draft_public() ? 'display:none;' : 'display:inline-block;';
-		$private_styling = ! $this->is_draft_public() ? 'display:none;' : 'display:inline-block;';
+		$private_styling = $this->is_draft_public() ? 'display:inline-block;' : 'display:none;';
 
 		// Prepare HTML for meta box.
 		ob_start();
@@ -196,7 +196,7 @@ class Share_Drafts_Publicly {
 
 		global $wpdb;
 
-		if ( isset( $_GET['secret'] ) && $wp_query->is_main_query() && get_post_meta( $wp_query->query_vars['p'], '_draft_secret_key', true ) === $_GET['secret'] ) {
+		if ( isset( $_GET['secret'] ) && $wp_query->is_main_query() && get_post_meta( $wp_query->query_vars['p'], '_draft_secret_key', true ) === sanitize_text_field( $_GET['secret'] ) ) {
 			$posts = $wpdb->get_results( $wp_query->request );
 		}
 
