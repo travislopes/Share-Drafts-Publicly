@@ -240,7 +240,7 @@ class Share_Drafts_Publicly {
 	public function ajax_change_status() {
 
 		// Verify nonce.
-		if ( ! wp_verify_nonce( $_GET['nonce'], $this->get_slug() ) ) {
+		if ( ! wp_verify_nonce( $_GET['nonce'], 'share-drafts-publicly' ) ) {
 			wp_send_json_error( array( 'message' => esc_html__( 'Invalid request.', 'share_drafts_publicly' ) ) );
 		}
 
