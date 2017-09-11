@@ -10,7 +10,8 @@ Need to show a post to someone but they don't have a WordPress user account? Sha
 
 ### Changelog
 * v1.1.5
-	* Added filters for meta box priority and labels.
+	* Added filters for meta box priority: `sdp_meta_box_priority`;
+	* Added filters for labels: `sdp_label_meta_box_title`, `sdp_label_make_public`, `sdp_label_make_private`, `sdp_label_public_link`, `sdp_label_invalid_request`, `sdp_label_error_make_private`, `sdp_label_error_make_public`.
 * v1.1.4
 	* Added security enhancements.
 * v1.1.3
