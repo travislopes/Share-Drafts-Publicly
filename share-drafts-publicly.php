@@ -148,7 +148,7 @@ class Share_Drafts_Publicly {
 		$allowed_statuses = apply_filters( 'sdp_allowed_post_status', array( 'draft', 'pending', 'auto-draft', 'future' ) );
 
 		if ( in_array( $post_status, $allowed_statuses ) ) {
-			add_meta_box( 'share_drafts_publicly', esc_html( apply_filters( 'sdp_meta_box_title', __( 'Share Drafts Publicly', 'share_drafts_publicly' ) ) ), array( $this, 'display_meta_box' ), null, 'side', apply_filters( 'sdp_meta_box_priority', 'low' ) );
+			add_meta_box( 'share_drafts_publicly', esc_html( apply_filters( 'sdp_label_meta_box_title', __( 'Share Drafts Publicly', 'share_drafts_publicly' ) ) ), array( $this, 'display_meta_box' ), null, 'side', apply_filters( 'sdp_priority_meta_box', 'low' ) );
 		}
 
 	}
@@ -250,7 +250,7 @@ class Share_Drafts_Publicly {
 
 		// Verify nonce.
 		if ( ! wp_verify_nonce( $_GET['nonce'], 'share-drafts-publicly' ) ) {
-			wp_send_json_error( array( 'message' => esc_html( apply_filters( 'sdp_label_invalid_reques', __( 'Invalid request.', 'share_drafts_publicly' ) ) ) ) );
+			wp_send_json_error( array( 'message' => esc_html( apply_filters( 'sdp_label_invalid_request', __( 'Invalid request.', 'share_drafts_publicly' ) ) ) ) );
 		}
 
 		// Get provided informaton.
