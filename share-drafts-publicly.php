@@ -2,7 +2,7 @@
 /**
 Plugin Name: Share Drafts Publicy
 Description: Provide a secret link to non-logged in users to view post drafts.
-Version: 1.1.4
+Version: 1.1.5
 Author: Travis Lopes
 Author URI: http://travislop.es
 License: GPL2
@@ -148,7 +148,7 @@ class Share_Drafts_Publicly {
 		$allowed_statuses = apply_filters( 'sdp_allowed_post_status', array( 'draft', 'pending', 'auto-draft', 'future' ) );
 
 		if ( in_array( $post_status, $allowed_statuses ) ) {
-			add_meta_box( 'share_drafts_publicly', esc_html__( 'Share Drafts Publicly', 'share_drafts_publicly' ), array( $this, 'display_meta_box' ), null, 'side', 'low' );
+			add_meta_box( 'share_drafts_publicly', esc_html( apply_filters( 'sdp_meta_box_title', __( 'Share Drafts Publicly', 'share_drafts_publicly' ) ) ), array( $this, 'display_meta_box' ), null, 'side', apply_filters( 'sdp_meta_box_priority', 'low' ) );
 		}
 
 	}
@@ -175,8 +175,8 @@ class Share_Drafts_Publicly {
 		?>
 
 		<input id="sdp_link" type="text" value="<?php echo esc_url( $draft_url ); ?>" style="<?php echo esc_attr( $private_styling ); ?>" class="widefat" onclick="this.setSelectionRange( 0, this.value.length );" readonly />
-		<input id="sdp_make_public" class="button" type="button" style="<?php echo esc_attr( $public_styling ); ?>" name="sdp_make_public" value="<?php esc_attr_e( 'Make Draft Public', 'share_drafts_publicly' ); ?>" />
-		<input id="sdp_make_private" class="button" type="button" style="<?php echo esc_attr( $private_styling ); ?>" name="sdp_make_private" value="<?php esc_attr_e( 'Make Draft Private', 'share_drafts_publicly' ); ?>" />
+		<input id="sdp_make_public" class="button" type="button" style="<?php echo esc_attr( $public_styling ); ?>" name="sdp_make_public" value="<?php echo esc_attr( apply_filters( 'sdp_label_make_public', __( 'Make Draft Public', 'share_drafts_publicly' ) ) ); ?>" />
+		<input id="sdp_make_private" class="button" type="button" style="<?php echo esc_attr( $private_styling ); ?>" name="sdp_make_private" value="<?php echo esc_attr( apply_filters( 'sdp_label_make_private', __( 'Make Draft Private', 'share_drafts_publicly' ) ) ); ?>" />
 		<span class="spinner"></span>
 
 		<?php
@@ -230,7 +230,7 @@ class Share_Drafts_Publicly {
 	public function add_post_row_action( $actions, $post ) {
 
 		if ( $this->is_draft_public( $post->ID ) ) {
-			$actions['public_link'] = '<a href="' . $this->get_draft_url( $post->ID ) . '">' . esc_html__( 'Public Draft Link', 'share_drafts_publicly' ) . '</a>';
+			$actions['public_link'] = '<a href="' . $this->get_draft_url( $post->ID ) . '">' . esc_html( apply_filters( 'sdp_label_public_link', __( 'Public Draft Link', 'share_drafts_publicly' ) ) ) . '</a>';
 		}
 
 		return $actions;
@@ -250,7 +250,7 @@ class Share_Drafts_Publicly {
 
 		// Verify nonce.
 		if ( ! wp_verify_nonce( $_GET['nonce'], 'share-drafts-publicly' ) ) {
-			wp_send_json_error( array( 'message' => esc_html__( 'Invalid request.', 'share_drafts_publicly' ) ) );
+			wp_send_json_error( array( 'message' => esc_html( apply_filters( 'sdp_label_invalid_reques', __( 'Invalid request.', 'share_drafts_publicly' ) ) ) ) );
 		}
 
 		// Get provided informaton.
@@ -264,7 +264,7 @@ class Share_Drafts_Publicly {
 				$make_private = $this->make_draft_private( $post_id );
 
 				if ( ! $make_private ) {
-					wp_send_json_error( array( 'message' => esc_html__( 'Unable to make draft private. Please try again.', 'share_drafts_publicly' ) ) );
+					wp_send_json_error( array( 'message' => esc_html( apply_filters( 'sdp_label_error_make_private', __( 'Unable to make draft private. Please try again.', 'share_drafts_publicly' ) ) ) ) );
 				} else {
 					wp_send_json_success();
 				}
@@ -274,7 +274,7 @@ class Share_Drafts_Publicly {
 				$make_public = $this->make_draft_public( $post_id );
 
 				if ( ! $make_public ) {
-					wp_send_json_error( array( 'message' => esc_html__( 'Unable to make draft public. Please try again.', 'share_drafts_publicly' ) ) );
+					wp_send_json_error( array( 'message' => esc_html( apply_filters( 'sdp_label_error_make_public', __( 'Unable to make draft public. Please try again.', 'share_drafts_publicly' ) ) ) ) );
 				} else {
 					wp_send_json_success( array( 'permalink' => $make_public ) );
 				}
