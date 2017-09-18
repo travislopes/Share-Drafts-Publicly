@@ -2,7 +2,7 @@
 /**
 Plugin Name: Share Drafts Publicy
 Description: Provide a secret link to non-logged in users to view post drafts.
-Version: 1.1.4
+Version: 1.1.5
 Author: Travis Lopes
 Author URI: http://travislop.es
 License: GPL2
