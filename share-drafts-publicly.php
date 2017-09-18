@@ -352,7 +352,7 @@ class Share_Drafts_Publicly {
 	public function make_draft_private( $post_id = 0 ) {
 
 		// If user does not have capability to edit posts, return.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		if ( ! current_user_can( 'edit_posts', $post_id ) ) {
 			return false;
 		}
 
@@ -376,7 +376,7 @@ class Share_Drafts_Publicly {
 	public function make_draft_public( $post_id = 0 ) {
 
 		// If user does not have capability to edit posts, return.
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+		if ( ! current_user_can( 'edit_posts', $post_id ) ) {
 			return false;
 		}
 
