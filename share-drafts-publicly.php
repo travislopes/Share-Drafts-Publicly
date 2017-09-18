@@ -351,6 +351,11 @@ class Share_Drafts_Publicly {
 	 */
 	public function make_draft_private( $post_id = 0 ) {
 
+		// If user does not have capability to edit posts, return.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return false;
+		}
+
 		// Delete post meta.
 		return delete_post_meta( $post_id, '_draft_secret_key' );
 
@@ -369,6 +374,11 @@ class Share_Drafts_Publicly {
 	 * @return string|bool
 	 */
 	public function make_draft_public( $post_id = 0 ) {
+
+		// If user does not have capability to edit posts, return.
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return false;
+		}
 
 		// Generate secret key.
 		$secret_key = wp_generate_password( 6, false, false );
